@@ -4,10 +4,6 @@ Personal skills for common [Codex](https://github.com/openai/codex) workflows. E
 skill lives in `skills/<name>/SKILL.md` and can be invoked with `$<name>` or a matching request,
 subject to the skill's trigger rules.
 
-This repository is an intentionally incomplete, allowlisted view of a live Codex home directory.
-It is not a configuration backup: credentials, history, sessions, logs, databases, caches,
-machine state, bundled skills, plugins, and private project-specific material are excluded.
-
 ## Skills
 
 | Skill | Description |

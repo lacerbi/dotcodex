@@ -1,0 +1,23 @@
+# Ignore everything
+*
+
+# Except these
+!.gitignore
+!AGENTS.md
+!LICENSE
+!README.md
+
+# Skills are published one at a time, on purpose. This repo is PUBLIC, and skills
+# are where machine paths, cluster hostnames and private-project internals collect.
+# `!skills/*/` only lets git descend into the skill dirs - git does not track empty
+# directories, so a skill stays local until it gets its own `!skills/<name>/**` line.
+!skills/
+!skills/*/
+
+!skills/audit/**
+!skills/doublecheck/**
+!skills/handoff/**
+!skills/hpc/**
+!skills/plan/**
+!skills/task/**
+!skills/triage/**

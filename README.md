@@ -4,6 +4,8 @@ Personal skills for common [Codex](https://github.com/openai/codex) workflows. E
 skill lives in `skills/<name>/SKILL.md` and can be invoked with `$<name>` or a matching request,
 subject to the skill's trigger rules.
 
+See also the companion [Claude Code skills repository](https://github.com/lacerbi/dotclaude).
+
 ## Skills
 
 | Skill | Description |

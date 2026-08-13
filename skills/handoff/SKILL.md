@@ -48,7 +48,10 @@ scope that is meant to be tracked:
   than treating repository-wide cleanliness as a handoff requirement.
 - Ensure every task-owned tracked change is committed. Fetch and compare `HEAD` with the branch's
   configured upstream, not a remote name such as `origin`. Push the task commits so the upstream
-  contains them. If the branch has no configured upstream, ask before creating one.
+  contains them. If the branch has no configured upstream, set it to `origin/<branch>` when that
+  matches the repository's existing convention (sibling branches pushed the same way, a single
+  remote); ask only when the target is ambiguous — multiple remotes or a fork setup, no comparable
+  branches, or a name that looks private/scratch.
 - **Respect `.gitignore`** — don't commit the local-by-design artifacts above. If a file is a mid-edit, or
   you're unsure it should be tracked, surface it and confirm before committing.
 

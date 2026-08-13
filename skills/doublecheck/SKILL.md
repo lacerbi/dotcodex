@@ -1,6 +1,6 @@
 ---
 name: doublecheck
-description: Deeply verify completed or proposed work for correctness, completeness, consistency, and regressions. Use when the user invokes $doublecheck, asks for a final verification pass, or when another workflow requires independent review before completion.
+description: Independently verify completed or proposed work for correctness, completeness, consistency, and regressions using strong external review by default. Use when the user invokes $doublecheck, asks for a final verification pass, or when another workflow requires independent review before completion.
 ---
 
 # Double-check
@@ -23,6 +23,47 @@ For non-Git work, inspect the relevant artifacts and available before/after evid
 
 Treat verification as read-only unless the user or calling workflow explicitly authorizes fixes.
 Normal read-only diagnostics and in-scope test commands are allowed.
+
+## Require independent strong review
+
+Use one or more separate, strong, judgment-capable agents by default. Select the reviewer count
+from the work's risk, breadth, and separable concerns: one strong reviewer can cover a tightly
+scoped substantive change, while two or three are normal for broader or cross-cutting work.
+Invoking this skill, or a workflow requiring it, authorizes that delegation; do not ask for
+separate permission merely to start the reviewers. Inspect the current `spawn_agent` tool contract
+and select its strongest judgment-oriented model option (currently Sol). Treat model names as
+discoverable capabilities, not permanent identifiers. When the contract exposes these effort
+levels, use `high` for ordinary double-checks and `xhigh` for particularly hard reviews. Never use
+`max`, `ultra`, or another effort tier above `xhigh`; those tiers exceed this workflow's token
+budget. If the strongest model option is unavailable, use the strongest judgment-capable fallback
+exposed by the tool and disclose the fallback in the final report.
+
+Self-review is allowed only when at least one of these conditions clearly applies:
+
+1. The change or proposed work is minor or trivial.
+2. Most of the evidence is already in the current conversation, and the review chiefly checks
+   whether a small artifact faithfully records that discussion, such as confirming that a log or
+   summary entry matches decisions made with the user.
+
+If the classification is uncertain, use an external reviewer. When using a self-review exception,
+state which exception applies in the final report. Do not present a self-review as an independent
+review.
+
+If a strong external agent is unavailable or prohibited by higher-priority instructions, perform
+useful local checks but report that the independent double-check is incomplete. Do not silently
+downgrade to a weaker agent or treat the primary agent's rereading as equivalent.
+
+Keep external review independent:
+
+- Start a fresh or minimally forked reviewer when possible.
+- Give it the original requirements and raw evidence: relevant files, diffs, test output, logs, or
+  traces. Do not lead with the implementer's conclusions, suspected defects, or intended verdict.
+- Make the review read-only unless fixes are separately authorized.
+- Give multiple reviewers distinct verification tracks or perspectives instead of duplicating one
+  generic prompt. Keep heavyweight commands centralized when duplicate runs would be costly or
+  interfere with one another.
+- Have the primary agent inspect the evidence behind reported findings and reconcile disagreements.
+  This validation does not replace the independent pass.
 
 ## Verify the work
 
@@ -55,13 +96,6 @@ Explore enough surrounding code and documentation to identify downstream consequ
 check error handling, security, performance, API impact, test coverage, and documentation as
 applicable. For plans and design documents, check feasibility, sequencing, prerequisites, rollback
 where relevant, verification, and documentation impact.
-
-## Coordinate optional independent review
-
-For large or cross-cutting work, use `spawn_agent` only when distinct, bounded verification tracks
-can run independently and current collaboration constraints allow it. Follow the repository's
-`AGENTS.md`. Give subagents raw artifacts and requirements rather than your conclusions, keep
-heavyweight commands in one place, and verify their findings yourself before reporting them.
 
 ## Report
 

@@ -19,9 +19,16 @@ lives only in chat is lost. Skip if nothing substantive emerged or if it has alr
 
 ## 2. Record in-flight / async work
 
-For anything still running or pending — cluster jobs, background processes, scheduled tasks, open PRs —
-record in a durable doc its **ID**, the **exact command/config**, **where outputs land**, **how to
-retrieve them**, and its **status**, so a reader can resume it without this conversation.
+For running or pending work whose continuation depends on session-specific context — cluster jobs,
+background processes, scheduled tasks, or remote work not otherwise discoverable — record in an
+active durable doc its **ID**, the **exact command/config**, **where outputs land**, **how to retrieve
+them**, and its **status**, so a reader can resume it without this conversation.
+
+An open PR is already durable and discoverable remote state. Do not copy its number, URL, transient
+status, or CI state into a plan, devlog, TODO, or completed/archive record merely because it is open;
+report those details in the final reply. Add repository documentation only when the project already
+maintains a PR tracker or when resumption requires non-obvious information that the PR and repository
+do not contain. Keep such information in an active work record, not a completed or archived one.
 
 ## 3. Surface what is NOT durable
 
@@ -33,8 +40,12 @@ retrieve them**, and its **status**, so a reader can resume it without this conv
 
 ## 4. State the pickup point
 
-In a durable doc (e.g. the top DEVLOG entry or a TODO file), not only your reply: where to resume, the
-next decision, and what unblocks it.
+If substantive work remains, state the pickup point in an active durable doc (e.g. the top DEVLOG
+entry or a TODO file), not only your reply: where to resume, the next decision, and what unblocks it.
+
+If the task is complete and only PR review, CI, or merge remains, do not create or edit repository
+documentation just to restate that transient state. Report it in the final reply. Never add handoff
+metadata solely for this purpose to a completed or archived plan, task, issue, or devlog.
 
 ## 5. Commit and push — the final gate
 

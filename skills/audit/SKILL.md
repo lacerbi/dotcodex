@@ -46,8 +46,9 @@ and line numbers, and keep final judgment with the primary agent.
 - Check security, performance, complexity, naming, and maintainability concerns in proportion to
   the target.
 - Apply project-specific standards before general preferences.
-- Avoid reporting stylistic preferences unless they create a concrete maintenance or correctness
-  risk.
+- Report style issues when style is part of the task's requirements, a project convention, or the
+  requested focus. Otherwise omit personal preferences unless they create a concrete maintenance
+  or correctness risk.
 
 ### Impact and risk
 

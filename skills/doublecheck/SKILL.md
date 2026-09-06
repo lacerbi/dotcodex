@@ -14,8 +14,10 @@ summaries or prior claims.
 When the work is in Git:
 
 - Inspect `git status --short`, the unstaged diff, and the staged diff.
-- If the working tree is clean and the target is committed work, identify the appropriate base and
-  inspect the commit or branch diff.
+- If relevant work was committed, identify the appropriate base and inspect the commit or branch
+  diff as well, even when the working tree also has changes.
+- Read targeted untracked files directly; they are absent from ordinary Git diffs. If output is
+  truncated, retrieve the omitted content in bounded chunks or inspect the affected files directly.
 - Distinguish changes made in the current task from unrelated user or agent changes. Do not modify,
   revert, stage, or claim ownership of unrelated work.
 
@@ -26,21 +28,24 @@ Normal read-only diagnostics and in-scope test commands are allowed.
 
 ## Require independent strong review
 
-Use one or more separate, strong, judgment-capable agents by default. Select the reviewer count
-from the work's risk, breadth, and separable concerns: one strong reviewer can cover a tightly
-scoped substantive change, while two or three are normal for broader or cross-cutting work.
-Invoking this skill, or a workflow requiring it, authorizes that delegation; do not ask for
-separate permission merely to start the reviewers. Inspect the current `spawn_agent` tool contract
-and select its strongest judgment-oriented model option (currently Sol). Treat model names as
-discoverable capabilities, not permanent identifiers. When the contract exposes these effort
-levels, use `high` for ordinary double-checks and `xhigh` for particularly hard reviews. Never use
-`max`, `ultra`, or another effort tier above `xhigh`; those tiers exceed this workflow's token
-budget. If the strongest model option is unavailable, use the strongest judgment-capable fallback
-exposed by the tool and disclose the fallback in the final report.
+Use separate, fresh-context reviewers by default. Follow the global `AGENTS.md` model and effort
+policy: Sol is the normal reviewer, including for challenging work. Select the reviewer count
+from the work's risk, breadth, and separable concerns; one can cover a tightly scoped substantive
+change, while two or three can cover broader work. A mixed review may assign one Astra to the
+most critical or difficult questions and one or two Sol reviewers to other substantive concerns.
+Multiple Astra reviewers should rarely be needed; follow the global policy for exceptions.
+
+Invoking this skill, or a workflow requiring it, authorizes delegation subject to higher-priority
+collaboration constraints. Do not ask for separate permission merely to start reviewers. Inspect
+the current `spawn_agent` contract and explicitly select the intended model and supported effort.
+Use Astra at `high`; never select Astra `xhigh` unless directed by the user. Sol may use `high` or
+`xhigh` as needed. Never use `max`, `ultra`, or another tier above `xhigh` in this workflow. If the
+intended reviewer is unavailable, use an available judgment-capable fallback under the global
+policy and disclose it; do not substitute a lightweight model for substantive review.
 
 Self-review is allowed only when at least one of these conditions clearly applies:
 
-1. The change or proposed work is minor or trivial.
+1. The change or proposed work is so small that a separate reviewer would add no useful scrutiny.
 2. Most of the evidence is already in the current conversation, and the review chiefly checks
    whether a small artifact faithfully records that discussion, such as confirming that a log or
    summary entry matches decisions made with the user.
@@ -55,13 +60,16 @@ downgrade to a weaker agent or treat the primary agent's rereading as equivalent
 
 Keep external review independent:
 
-- Start a fresh or minimally forked reviewer when possible.
+- Start with `fork_turns="none"` when available. Brief the reviewer explicitly; it should not
+  inherit the implementer's conversation or conclusions.
 - Give it the original requirements and raw evidence: relevant files, diffs, test output, logs, or
-  traces. Do not lead with the implementer's conclusions, suspected defects, or intended verdict.
+  traces. Include its exact scope, the finding criteria below, and the report format. Do not lead
+  with the implementer's conclusions, suspected defects, or intended verdict.
 - Make the review read-only unless fixes are separately authorized.
 - Give multiple reviewers distinct verification tracks or perspectives instead of duplicating one
-  generic prompt. Keep heavyweight commands centralized when duplicate runs would be costly or
-  interfere with one another.
+  generic prompt. Follow the global one-heavy-compute-agent rule: normally the primary agent runs
+  tests or builds, and reviewers are explicitly instructed to use static analysis without heavy
+  processes.
 - Have the primary agent inspect the evidence behind reported findings and reconcile disagreements.
   This validation does not replace the independent pass.
 
@@ -95,13 +103,24 @@ Evaluate:
 Explore enough surrounding code and documentation to identify downstream consequences. For code,
 check error handling, security, performance, API impact, test coverage, and documentation as
 applicable. For plans and design documents, check feasibility, sequencing, prerequisites, rollback
-where relevant, verification, and documentation impact.
+where relevant, verification, documentation impact, and whether each phase has enough detail for
+its stated executor, including concrete steps and acceptance checks for Sol/Opus phases.
+
+## What counts as a finding
+
+Report evidence-backed issues affecting correctness, stated requirements, coherence, or future
+maintainability, including minor but real issues. Style counts when it is part of the requirements,
+a project convention, or the requested focus; otherwise omit personal preferences. Exclude
+speculative or unverifiable claims. Reviewers should apply this standard before reporting, with a
+location and confidence (high, medium, or low) for each finding.
 
 ## Report
 
-Lead with findings ordered by severity. For each finding, give concrete evidence with clickable
-file and line references where available, explain the impact, and recommend a correction. Separate
-confirmed defects from questions, assumptions, and optional improvements.
+Lead with findings grouped by severity: **must fix** for correctness, requirement, or integrity
+failures; **should fix** for real non-blocking gaps or risks; **optional** for worthwhile improvements.
+For each finding, give concrete evidence with clickable file and line references where available,
+confidence, the impact, and a recommended correction. Separate confirmed defects from questions
+and assumptions.
 
 Then report:
 

@@ -70,3 +70,9 @@ scope that is meant to be tracked:
 
 What's durable (committed/pushed), what's in flight (with the retrieve command), where you recorded the
 session's findings/decisions (if any), what isn't durable yet, and the one-line pickup point.
+
+If substantive work remains, end with a fenced text block the user can paste verbatim as the next
+session's first message: the pickup point, the orientation files to read first, and any in-flight
+work to re-attach to with its ID and retrieval command. Include the active plan's executor and
+approval status when relevant. Skip files known to be loaded automatically in the destination
+session.

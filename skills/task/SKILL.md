@@ -72,6 +72,18 @@ Use `spawn_agent` only for concrete, bounded work that can proceed independently
 collaboration constraints allow it. Follow the repository's `AGENTS.md` for delegation and model
 choice.
 
+Follow the plan's per-phase executor. **Astra ≈ Fable** and **Sol ≈ Opus** are the cross-ecosystem
+role equivalents defined in the global `AGENTS.md`; use models and tools available in the current
+runtime. Use the phase text as the core brief, adding the current tree state, relevant conventions,
+return format, and file ownership. Include the purpose, constraints, acceptance checks, and how to
+handle evidence that contradicts the plan's assumptions.
+
+Before Sol/Opus executes a phase written for Astra/Fable, expand it in place into concrete steps,
+paths, commands where relevant, and acceptance checks. Tell the user about that adaptation and
+continue within the approved scope. Preserve the goal and decisions; seek input only if the
+adaptation requires a material change the user has not already authorized. A model name change
+alone does not require rewriting a phase that already has sufficient detail.
+
 The primary agent owns the checklist because Codex agents share the workspace. Mark the item `[~]`
 before delegation, ask the subagent to report results without editing the tracker, then update the
 tracker after reviewing its work. Avoid concurrent edits to the same file.
@@ -87,10 +99,10 @@ do not treat a passing test as proof of checks that were not run.
 
 Apply this section only to `TASK_*.md` files created by this skill, never to an existing plan.
 
-After verification:
+After verification passes and the task is complete:
 
-- If the file contains only transient execution tracking, propose removing it and obtain approval
-  unless the user already requested cleanup or repository instructions require it.
+- If the file contains only transient execution tracking, routine verification, and a completion
+  summary, remove it after verification unless the user or repository instructions require keeping it.
 - If it records durable findings, decisions, constraints, or follow-ups, propose the appropriate
   destination under repository conventions. Preserve that information there before removing the
   task file.

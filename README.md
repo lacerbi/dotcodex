@@ -6,6 +6,10 @@ subject to the skill's trigger rules.
 
 See also the companion [Claude Code skills repository](https://github.com/lacerbi/dotclaude).
 
+The shared workflow roles are **Astra ≈ Fable** for orchestration and **Sol ≈ Opus** for normal
+delegation, including implementation and independent review. [AGENTS.md](AGENTS.md) owns model
+selection, reasoning effort, mixed-review guidance, and the limit on concurrent heavy compute.
+
 ## Skills
 
 | Skill | Description |

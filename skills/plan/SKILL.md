@@ -2,7 +2,10 @@
 name: plan
 description: Explore a project and create a detailed, approval-gated implementation plan before making changes. Use when the user asks for a plan, invokes $plan, or wants investigation and planning without execution.
 ---
-Plan the requested work without implementing it. Explore and analyze before making task changes.
+Plan the requested work before implementing it. Exploration includes diagnostic scripts, tests,
+and bounded experiments that resolve real uncertainty; keep probes separate from implementation
+and respect the current mode's write constraints. Begin implementation once the user approves the
+plan, recognizing any approval or execution instructions already given in the conversation.
 
 ## Phase 1: Task Understanding
 
@@ -49,6 +52,8 @@ After exploration:
 2. Confirm or refute hypotheses
 3. Build a mental model of the current state and what the task requires
 4. Identify documentation that must be updated as part of the work, and whether any new document has a distinct durable purpose
+5. Decide what the orchestrator will execute and what to delegate, following the global
+   `AGENTS.md` model policy, and record that split in the plan
 
 Before proposing a new document:
 - Name its durable audience or question and the information it will own.
@@ -62,17 +67,36 @@ Create a plan file named `PLAN-<task-slug>.md` (e.g., `PLAN-add-user-auth.md`) i
 project root, unless the user or project instructions (especially `AGENTS.md`) specify a different
 location. The task slug should be lowercase, hyphen-separated, and concise (3-5 words max).
 
+Write each phase for its executor and name the model and role. The global `AGENTS.md` maps
+**Astra ≈ Fable** and **Sol ≈ Opus** for plans shared between the two ecosystems.
+
+- **Astra/Fable orchestrator phases**: record the goal, constraints, acceptance criteria, and
+  decisions that bound the work. Leave routine implementation steps to the executor's judgment.
+- **Sol/Opus phases**, whether executed by the orchestrator or a subagent: include concrete steps,
+  file paths, commands where relevant, and expected results. Explain the purpose and what to do
+  when a check contradicts an assumption; the executor should investigate that mismatch instead
+  of following obsolete steps. These details belong in the durable plan, which is also the core
+  of a delegated phase's brief.
+
+Use Sol for normal delegated work, including challenging implementation. Keep for Astra the parts
+that benefit most from its judgment; once the design and acceptance checks are clear, Sol can
+execute it. Make the split reviewable by the user. If a later session changes the executor, `$task`
+adapts the phase's detail before execution. Preserve user-directed model and effort choices.
+
 **Scale the plan to complexity**:
 
 ### For simple tasks:
 ```markdown
 # Plan: [Task Title]
 
+Status: [PENDING APPROVAL | APPROVED, according to the user's authorization]
+Executor: [Model and role, e.g. Sol orchestrator]
+
 ## Goal
 [What we're accomplishing]
 
 ## Approach
-1. [Step]
+1. [Concrete step: file, command where relevant, expected result]
 2. [Step]
 3. [Step]
 
@@ -82,6 +106,8 @@ location. The task slug should be lowercase, hyphen-separated, and concise (3-5 
 ## Verification
 - [ ] [How to confirm success]
 ```
+
+Simple plans should be precise enough for Sol/Opus to execute or resume.
 
 ### For moderate/complex tasks:
 ```markdown
@@ -100,14 +126,15 @@ Status: PENDING APPROVAL
 ## Phases
 
 ### Phase 1: [Name]
+**Executor**: [Model and role, e.g. Astra orchestrator or Sol subagent]
 **Goal**: [What this achieves]
 
 **Work**:
 - [Item] - [Details]
 - [Item] - [Details]
 
-**Steps**:
-1. [Step]
+**Steps** (Sol/Opus phases):
+1. [Concrete step: file, command where relevant, expected result]
 2. [Step]
 
 **Verification**:
@@ -136,13 +163,16 @@ section afterwards. Everything below that bar stays a plain statement in the pla
 ```
 
 Add sections as needed: Prerequisites, Risks, Rollback, Testing Strategy, etc. A simple plan that
-turns on one material choice should carry a Decisions section too.
+turns on one material choice should carry a Decisions section too. Set the status to reflect the
+user's actual authorization and omit the approval request when approval is already settled.
 
 ## Phase 5: Plan Review
 
-Use the `doublecheck` skill against the plan file to verify completeness, correctness, feasibility,
-and internal consistency before presenting it to the user. Fix any issues found. If the skill is
-unavailable, perform the equivalent review directly and disclose the fallback.
+Use the `doublecheck` skill with the explicit plan file path, including when the file is untracked
+and absent from Git diffs. Verify completeness, correctness, feasibility, internal consistency,
+and whether each phase is precise enough for its stated executor before presenting it to the user.
+Fix any issues found. If the skill is unavailable, perform the equivalent review directly and
+disclose the fallback.
 
 Do not skip this step. Do not decide it's "not worth it" because the plan looks complete or the task seems simple — past instances have skipped it and shipped flawed plans. This step is non-negotiable.
 
@@ -156,7 +186,7 @@ plan needs the summary plus anything genuinely open, and nothing more.
 1. **Summarize the plan in plain language.** Assume a technical reader who knows the project
    broadly but may not recall the details, or was never in them. Say what will change and why —
    not a phase-by-phase recital. Be direct; skip jargon unless a term genuinely carries meaning
-   no plain phrasing does.
+   no plain phrasing does. Include the execution split so the user can override it.
 2. **Present the decisions** from the plan's Decisions section: what was chosen, why, and what was
    rejected along with its tradeoffs. Present the calls **you** made; skip the ones the user
    already made or settled with you in conversation — don't re-litigate their own choices back
@@ -168,24 +198,19 @@ plan needs the summary plus anything genuinely open, and nothing more.
    (`request_user_input` in Codex Plan mode when available).
 4. Share the doublecheck findings (and any fixes applied)
 5. Tell the user where the plan file is
-6. Ask them to review and edit if needed
-7. Wait for explicit confirmation
-8. Do NOT begin work until confirmed
+6. Ask for approval when it is still needed; recognize approval or execution instructions already
+   given by the user. Do not begin implementation while a required approval remains pending.
 
 ## Phase 7: Execute
 
-Once confirmed:
-1. Re-read the plan file (user or double-check may have edited it)
-2. Note any changes
-3. Proceed following the plan
+Execution is tracked with `$task` against the approved plan file:
 
-## Rules
-
-- Don't skip exploration
-- Don't start work during planning
-- Always apply the `doublecheck` workflow in Phase 5 — use the skill when available
-- Verify, don't assume
-- If materially unclear, ask the user using the interaction mechanism available in the current mode
-- Get user confirmation before executing
-- Re-read the plan after confirmation
-- The plan should be clear enough for someone else to follow
+1. Re-read the plan file and note changes from the user or review.
+2. Continue in this session when its context remains useful. If substantial exploration makes a
+   fresh session preferable, first preserve any execution-critical rationale in the plan, then
+   recommend the switch; let the user decide. A different executor may need more explicit steps.
+3. Use `$task` on the plan file here. If the user chooses a fresh session, provide a fenced text
+   block they can paste as its first message: the `$task` invocation with the plan path, its
+   approval status, and the orientation files to read first. Skip files known to be loaded
+   automatically in the destination session. If `$task` is unavailable, track execution in the
+   plan directly and disclose the fallback.

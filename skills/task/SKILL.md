@@ -54,6 +54,10 @@ Update the checklist after every significant action:
 Use commentary updates for material progress during long-running work; the checklist does not
 replace communication with the user.
 
+When execution raises four or more decisions, or a point needing several discussion rounds,
+offer the `decision-board` skill, or reuse a board already chosen for this work. Record the
+board's link, process file, outcome documents and last recorded round in the task or plan.
+
 ## 3. Complete the task
 
 Continue until every in-scope item is complete or genuinely blocked. Do not silently skip or defer
@@ -72,17 +76,19 @@ Use `spawn_agent` only for concrete, bounded work that can proceed independently
 collaboration constraints allow it. Follow the repository's `AGENTS.md` for delegation and model
 choice.
 
-Follow the plan's per-phase executor. **Astra ≈ Fable** and **Sol ≈ Opus** are the cross-ecosystem
-role equivalents defined in the global `AGENTS.md`; use models and tools available in the current
-runtime. Use the phase text as the core brief, adding the current tree state, relevant conventions,
-return format, and file ownership. Include the purpose, constraints, acceptance checks, and how to
-handle evidence that contradicts the plan's assumptions.
+Use the executor the plan names for each phase; a phase that names a Claude model is translated
+or run as the Claude agents section of the global `AGENTS.md` describes. Carry out orchestrator
+phases yourself, whatever model the plan names for them; when it differs from yours, say so, since
+the user may want to switch models. Use the phase text as the core brief, adding current tree
+state, relevant conventions, return format, file ownership and how to investigate evidence that
+contradicts the plan's assumptions.
 
-Before Sol/Opus executes a phase written for Astra/Fable, expand it in place into concrete steps,
-paths, commands where relevant, and acceptance checks. Tell the user about that adaptation and
-continue within the approved scope. Preserve the goal and decisions; seek input only if the
-adaptation requires a material change the user has not already authorized. A model name change
-alone does not require rewriting a phase that already has sufficient detail.
+Before execution, fill missing context or task-critical detail in the plan, with concrete steps,
+paths and commands where the work's uncertainty or risk warrants them. Preserve its goal and
+decisions; seek input only for a material change beyond the user's authorization. Tell the user
+about every substantial or consequential change you make to the approved plan, whether it fills a
+gap or follows from an investigation; minor ones need no mention. A model change alone does not
+require rewriting a sufficient approved phase.
 
 The primary agent owns the checklist because Codex agents share the workspace. Mark the item `[~]`
 before delegation, ask the subagent to report results without editing the tracker, then update the

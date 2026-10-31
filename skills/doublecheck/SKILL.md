@@ -28,18 +28,15 @@ Normal read-only diagnostics and in-scope test commands are allowed.
 
 ## Require independent strong review
 
-Use separate, fresh-context reviewers by default. Follow the global `AGENTS.md` model and effort
-policy: Sol is the normal reviewer, including for challenging work. Select the reviewer count
-from the work's risk, breadth, and separable concerns; one can cover a tightly scoped substantive
-change, while two or three can cover broader work. A mixed review may assign one Astra to the
-most critical or difficult questions and one or two Sol reviewers to other substantive concerns.
-Multiple Astra reviewers should rarely be needed; follow the global policy for exceptions.
+Use separate, fresh-context reviewers by default, choosing models and efforts by Agent Selection
+in the global `AGENTS.md` and matching them to the work's judgment and technical demands. Select
+their count from the risk, breadth and separable concerns: one may cover a tightly scoped
+substantive change, while two or three may cover broader work. When project instructions, or the
+plan or workflow that invoked this review, name the reviewers, run those.
 
 Invoking this skill, or a workflow requiring it, authorizes delegation subject to higher-priority
-collaboration constraints. Do not ask for separate permission merely to start reviewers. Inspect
-the current `spawn_agent` contract and explicitly select the intended model and supported effort.
-Use Astra at `high`; never select Astra `xhigh` unless directed by the user. Sol may use `high` or
-`xhigh` as needed. Never use `max`, `ultra`, or another tier above `xhigh` in this workflow. If the
+collaboration constraints: do not ask separately to start reviewers. Inspect the current
+`spawn_agent` contract and explicitly select supported model identifiers and efforts. If the
 intended reviewer is unavailable, use an available judgment-capable fallback under the global
 policy and disclose it; do not substitute a lightweight model for substantive review.
 
@@ -104,7 +101,8 @@ Explore enough surrounding code and documentation to identify downstream consequ
 check error handling, security, performance, API impact, test coverage, and documentation as
 applicable. For plans and design documents, check feasibility, sequencing, prerequisites, rollback
 where relevant, verification, documentation impact, and whether each phase has enough detail for
-its stated executor, including concrete steps and acceptance checks for Sol/Opus phases.
+its executor, including acceptance checks and the concrete steps its uncertainty or risk warrants
+(always concrete steps for a Sol phase).
 
 ## What counts as a finding
 

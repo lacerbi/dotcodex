@@ -67,21 +67,20 @@ Create a plan file named `PLAN-<task-slug>.md` (e.g., `PLAN-add-user-auth.md`) i
 project root, unless the user or project instructions (especially `AGENTS.md`) specify a different
 location. The task slug should be lowercase, hyphen-separated, and concise (3-5 words max).
 
-Write each phase for its executor and name the model and role. The global `AGENTS.md` maps
-**Astra ≈ Fable** and **Sol ≈ Opus** for plans shared between the two ecosystems.
+Name each phase's executor, its model and role, chosen by Agent Selection in the global
+`AGENTS.md`. Keep for Astra the parts that benefit most from its judgment; once the design and
+acceptance checks are clear, Sol can execute them.
 
-- **Astra/Fable orchestrator phases**: record the goal, constraints, acceptance criteria, and
-  decisions that bound the work. Leave routine implementation steps to the executor's judgment.
-- **Sol/Opus phases**, whether executed by the orchestrator or a subagent: include concrete steps,
-  file paths, commands where relevant, and expected results. Explain the purpose and what to do
-  when a check contradicts an assumption; the executor should investigate that mismatch instead
-  of following obsolete steps. These details belong in the durable plan, which is also the core
-  of a delegated phase's brief.
+Every phase states its goal, context, constraints, ownership, governing decisions and acceptance
+checks. Include concrete steps, file paths, commands and expected results where uncertainty,
+reproducibility or operational risk warrants them; Sol is literal, so a phase it executes always
+gets concrete steps. Leave routine details to the executor's judgment and explain how to
+investigate evidence that contradicts a plan assumption. Seek input when that investigation
+requires a material change beyond the authorized scope.
 
-Use Sol for normal delegated work, including challenging implementation. Keep for Astra the parts
-that benefit most from its judgment; once the design and acceptance checks are clear, Sol can
-execute it. Make the split reviewable by the user. If a later session changes the executor, `$task`
-adapts the phase's detail before execution. Preserve user-directed model and effort choices.
+The phase text is the durable core of a delegated brief; add current tree state, relevant
+conventions and return format at dispatch. Precision that matters belongs in the plan, not in a
+spawn-time brief: the plan is what gets reviewed in Phase 5 and what survives a crashed session.
 
 **Scale the plan to complexity**:
 
@@ -107,7 +106,7 @@ Executor: [Model and role, e.g. Sol orchestrator]
 - [ ] [How to confirm success]
 ```
 
-Simple plans should be precise enough for Sol/Opus to execute or resume.
+Simple plans should contain enough context and acceptance checks for their executor to execute or resume.
 
 ### For moderate/complex tasks:
 ```markdown
@@ -133,7 +132,7 @@ Status: PENDING APPROVAL
 - [Item] - [Details]
 - [Item] - [Details]
 
-**Steps** (Sol/Opus phases):
+**Steps** (where task-critical detail is needed):
 1. [Concrete step: file, command where relevant, expected result]
 2. [Step]
 
@@ -196,6 +195,9 @@ plan needs the summary plus anything genuinely open, and nothing more.
    as a whole or override just the ones they care about, rather than adjudicating every fork. For
    any that genuinely block, ask using the interaction mechanism available in the current mode
    (`request_user_input` in Codex Plan mode when available).
+   For four or more decision points, or a discussion needing several rounds, offer the
+   `decision-board` skill once, unless the user or workflow already chose it. On a board,
+   present the choices on its hosted page and keep the plan linked to the board records.
 4. Share the doublecheck findings (and any fixes applied)
 5. Tell the user where the plan file is
 6. Ask for approval when it is still needed; recognize approval or execution instructions already
@@ -207,8 +209,9 @@ Execution is tracked with `$task` against the approved plan file:
 
 1. Re-read the plan file and note changes from the user or review.
 2. Continue in this session when its context remains useful. If substantial exploration makes a
-   fresh session preferable, first preserve any execution-critical rationale in the plan, then
-   recommend the switch; let the user decide. A different executor may need more explicit steps.
+   fresh session preferable, first preserve any execution-critical rationale in the plan and fill
+   any gaps in context or task-critical detail the next executor would need, telling the user
+   about any substantial change; then recommend the switch and let the user decide.
 3. Use `$task` on the plan file here. If the user chooses a fresh session, provide a fenced text
    block they can paste as its first message: the `$task` invocation with the plan path, its
    approval status, and the orientation files to read first. Skip files known to be loaded

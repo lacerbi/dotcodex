@@ -15,7 +15,8 @@ the point of the tool — do not hand commands to the user to run, unless asked.
 2. If that path is absent or stale, discover it with `Get-Command hpc` in PowerShell or
    `bash -lc 'command -v hpc'` through `shell_command`, then take the directory of that path. If
    discovery fails, ask the user where the `hpc-launcher` folder is.
-3. Ask before persisting a newly discovered location, then update the skill reference. Do not
+3. Ask before persisting a newly discovered location, then update the skill reference with the
+   path written relative to the home directory (`~`), since this skill is published. Do not
    modify global `AGENTS.md` merely to cache launcher discovery.
 
 ## 2. Read the launcher's own docs

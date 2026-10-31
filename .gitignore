@@ -15,9 +15,23 @@
 !skills/*/
 
 !skills/audit/**
+!skills/decision-board/**
 !skills/doublecheck/**
 !skills/handoff/**
 !skills/hpc/**
 !skills/plan/**
 !skills/task/**
 !skills/triage/**
+
+# The rules below must stay under the `!skills/...` lines, since the last matching rule wins.
+
+# decision-board reads its private Site configuration from ~/.codex/decision-board/. These keep
+# a stray copy of it, and Site project files that hold its identity or local state
+# (.openai/hosting.json, .wrangler/, node_modules/, dist/), from being published with site/.
+skills/decision-board/site.json
+skills/decision-board/site/.*
+skills/decision-board/site/node_modules/
+skills/decision-board/site/dist/
+
+# Python bytecode caches inside published skills.
+__pycache__/

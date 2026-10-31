@@ -6,15 +6,16 @@ subject to the skill's trigger rules.
 
 See also the companion [Claude Code skills repository](https://github.com/lacerbi/dotclaude).
 
-The shared workflow roles are **Astra ≈ Fable** for orchestration and **Sol ≈ Opus** for normal
-delegation, including implementation and independent review. [AGENTS.md](AGENTS.md) owns model
-selection, reasoning effort, mixed-review guidance, and the limit on concurrent heavy compute.
+[AGENTS.md](AGENTS.md) owns model selection, reasoning effort, mixed-review guidance, translating or
+running Claude models, the limit on concurrent heavy compute, and the writing rules for documents
+and for questions to the user.
 
 ## Skills
 
 | Skill | Description |
 |-------|-------------|
 | [`$audit`](skills/audit/SKILL.md) | Audit files or changes for correctness, quality, integration, and risk without modifying them |
+| [`$decision-board`](skills/decision-board/SKILL.md) | Put decisions on a private hosted board the user answers from desktop or phone; includes the board's Site files |
 | [`$doublecheck`](skills/doublecheck/SKILL.md) | Deeply verify completed or proposed work for completeness, consistency, and regressions |
 | [`$handoff`](skills/handoff/SKILL.md) | Make work resumable from a clean checkout by preserving context, committing, and pushing |
 | [`$hpc`](skills/hpc/SKILL.md) | Launch and manage jobs through the HPC launcher |
